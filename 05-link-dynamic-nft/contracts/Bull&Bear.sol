@@ -169,11 +169,12 @@ contract BullBear is ERC721, ERC721Enumerable, ERC721URIStorage, KeeperCompatibl
     s_randomWords = randomWords;
     // randomWords looks like this uint256: 68187645017388103597074813724954069904348581739269924188458647203960383435815
 
-    console.log("...Fulfilling random Words");
+    console.log("...Fulfilling random Words: ", randomWords[0]);
     
     string[] memory urisForTrend = currentMarketTrend == MarketTrend.BULL ? bullUrisIpfs : bearUrisIpfs;
     uint256 idx = randomWords[0] % urisForTrend.length; // use modulo to choose a random index.
 
+    console.log("Random idx: ", idx);
 
     for (uint i = 0; i < _tokenIdCounter.current() ; i++) {
         _setTokenURI(i, urisForTrend[idx]);

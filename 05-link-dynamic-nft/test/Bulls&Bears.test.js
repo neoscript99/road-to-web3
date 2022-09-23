@@ -217,6 +217,7 @@ describe("Bull&Bear Token Contract", () => {
     );
 
     const newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
+    console.log('bear 1: ', newTokenUri)
     expect(newTokenUri).to.include("_bear.json");
 
     // Decrease price again to check that Token URI does not update.
@@ -229,7 +230,13 @@ describe("Bull&Bear Token Contract", () => {
 
     upkeepTx = await tokenContract.performUpkeep(checkData);
     upkeepTx.wait(1);
+    await vrfCoordinatorMock.fulfillRandomWords(
+      2,
+      tokenContract.address
+    );
 
+
+    console.log('bear 2: ', newTokenUri)
     expect(newTokenUri).to.include("_bear.json");
 
     await resetPrice();
@@ -247,7 +254,7 @@ describe("Bull&Bear Token Contract", () => {
     let upkeepTx = await tokenContract.performUpkeep(checkData);
     upkeepTx.wait(1);
 
-    const REQUEST_ID = 2;
+    const REQUEST_ID = 3;
     await vrfCoordinatorMock.fulfillRandomWords(
       REQUEST_ID,
       tokenContract.address
@@ -255,6 +262,7 @@ describe("Bull&Bear Token Contract", () => {
 
     const newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
 
+    console.log('bull 1: ', newTokenUri)
     expect(newTokenUri).to.include("bull.json");
 
     // Decrease price again to check that Token URI does not update.
@@ -267,7 +275,12 @@ describe("Bull&Bear Token Contract", () => {
 
     upkeepTx = await tokenContract.performUpkeep(checkData);
     upkeepTx.wait(1);
+    await vrfCoordinatorMock.fulfillRandomWords(
+      4,
+      tokenContract.address
+    );
 
+    console.log('bull 2: ', newTokenUri)
     expect(newTokenUri).to.include("bull.json");
 
     await resetPrice();
