@@ -10,7 +10,7 @@ let Token,
   subscriptionId,
   VrfCoordinatorMock,
   vrfCoordinatorMock;
-
+let randomReqId = 1;
 const TOKEN_ID_0 = 0;
 const TOKEN_ID_1 = 1;
 
@@ -33,7 +33,20 @@ const resetPrice = async () => {
   const resetPriceTx = await priceFeedMock.updateAnswer(INITIAL_PRICE);
   await resetPriceTx.wait(1);
 };
+const requestRandom = async () => {
+  // Move forward time to go past interval.
+  moveTime(UPDATE_INTERVAL_SEC + 1);
+  moveBlocks(1);
 
+  upkeepTx = await tokenContract.performUpkeep(checkData);
+  upkeepTxReceipt = await upkeepTx.wait(1);
+  console.log('vrfCoordinatorMock.fulfillRandomWords REQUEST_ID: ', randomReqId)
+  await vrfCoordinatorMock.fulfillRandomWords(
+    randomReqId,
+    tokenContract.address
+  );
+  randomReqId++;
+}
 before(async () => {
   [deployer, owner1] = await ethers.getSigners();
 
@@ -196,6 +209,11 @@ describe("Bull&Bear Token Contract", () => {
     expect(updatedUpkeepTs).to.be.greaterThan(lastUpkeepTs);
   });
 
+  it("change request id for vrfCoordinatorMock", async () => {
+    //invoke  COORDINATOR.requestRandomWords
+    for (let i = 0; i < 5; i++) await requestRandom()
+    console.log("-----------------------------Request Id-----------------------", randomReqId)
+  });
   // ======================================================================================
   //  *** The following two it() blocks have the changes for the VRF randomness testing ***
   // ======================================================================================
@@ -204,19 +222,9 @@ describe("Bull&Bear Token Contract", () => {
     let newPriceTx = await priceFeedMock.updateAnswer(newPrice);
     await newPriceTx.wait(1);
 
-    // Move forward time to go past interval.
-    moveTime(UPDATE_INTERVAL_SEC + 1);
-    moveBlocks(1);
+    await requestRandom()
 
-    const REQUEST_ID = 1;
-    upkeepTx = await tokenContract.performUpkeep("0x");
-    upkeepTxReceipt = await upkeepTx.wait(1);
-    await vrfCoordinatorMock.fulfillRandomWords(
-      REQUEST_ID,
-      tokenContract.address
-    );
-
-    const newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
+    let newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
     console.log('bear 1: ', newTokenUri)
     expect(newTokenUri).to.include("_bear.json");
 
@@ -225,16 +233,9 @@ describe("Bull&Bear Token Contract", () => {
     newPriceTx = await priceFeedMock.updateAnswer(newPrice);
     await newPriceTx.wait(1);
 
-    moveTime(UPDATE_INTERVAL_SEC + 1);
-    moveBlocks(1);
+    await requestRandom()
 
-    upkeepTx = await tokenContract.performUpkeep(checkData);
-    upkeepTx.wait(1);
-    await vrfCoordinatorMock.fulfillRandomWords(
-      2,
-      tokenContract.address
-    );
-
+    newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
 
     console.log('bear 2: ', newTokenUri)
     expect(newTokenUri).to.include("_bear.json");
@@ -247,20 +248,9 @@ describe("Bull&Bear Token Contract", () => {
     let newPriceTx = await priceFeedMock.updateAnswer(newPrice);
     await newPriceTx.wait(1);
 
-    // Move forward time to go past interval.
-    moveTime(UPDATE_INTERVAL_SEC + 1);
-    moveBlocks(1);
+    await requestRandom()
 
-    let upkeepTx = await tokenContract.performUpkeep(checkData);
-    upkeepTx.wait(1);
-
-    const REQUEST_ID = 3;
-    await vrfCoordinatorMock.fulfillRandomWords(
-      REQUEST_ID,
-      tokenContract.address
-    );
-
-    const newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
+    let newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
 
     console.log('bull 1: ', newTokenUri)
     expect(newTokenUri).to.include("bull.json");
@@ -270,16 +260,9 @@ describe("Bull&Bear Token Contract", () => {
     newPriceTx = await priceFeedMock.updateAnswer(newPrice);
     await newPriceTx.wait(1);
 
-    moveTime(UPDATE_INTERVAL_SEC + 1);
-    moveBlocks(1);
+    await requestRandom()
 
-    upkeepTx = await tokenContract.performUpkeep(checkData);
-    upkeepTx.wait(1);
-    await vrfCoordinatorMock.fulfillRandomWords(
-      4,
-      tokenContract.address
-    );
-
+    newTokenUri = await tokenContract.tokenURI(TOKEN_ID_0);
     console.log('bull 2: ', newTokenUri)
     expect(newTokenUri).to.include("bull.json");
 

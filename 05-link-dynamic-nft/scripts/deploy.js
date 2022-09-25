@@ -21,7 +21,7 @@ const VRF_FUND_AMOUNT = "1000000000000000000000";
 const BASE_FEE = "250000000000000000";
 const GAS_PRICE_LINK = 1e9; // 0.000000001 LINK per gas
 async function main() {
-    [deployer, owner1] = await ethers.getSigners();
+    //[deployer, owner1] = await ethers.getSigners();
   
     // Setup Price Feeds
     PriceFeedMock = await ethers.getContractFactory("MockV3Aggregator");

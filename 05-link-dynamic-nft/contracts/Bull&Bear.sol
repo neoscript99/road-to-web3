@@ -106,7 +106,7 @@ contract BullBear is ERC721, ERC721Enumerable, ERC721URIStorage, KeeperCompatibl
         
             if (latestPrice == currentPrice) {
                 console.log("NO CHANGE -> returning!");
-                return;
+                //return;
             }
 
             if (latestPrice < currentPrice) {
@@ -174,7 +174,7 @@ contract BullBear is ERC721, ERC721Enumerable, ERC721URIStorage, KeeperCompatibl
     string[] memory urisForTrend = currentMarketTrend == MarketTrend.BULL ? bullUrisIpfs : bearUrisIpfs;
     uint256 idx = randomWords[0] % urisForTrend.length; // use modulo to choose a random index.
 
-    console.log("Random idx: ", idx);
+    console.log("Random idx: ", idx, urisForTrend[idx]);
 
     for (uint i = 0; i < _tokenIdCounter.current() ; i++) {
         _setTokenURI(i, urisForTrend[idx]);
