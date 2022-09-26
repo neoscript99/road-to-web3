@@ -1,6 +1,7 @@
 
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-waffle");
+require("@nomiclabs/hardhat-etherscan");
 require("dotenv").config()
 
 /**
@@ -23,7 +24,10 @@ module.exports = {
   networks: {
     goerli: {
       url: GOERLI_URL,
-      accounts: ['1ce6'+PRIVATE_KEY+'58b5fb6ce4d']
+      accounts: ['99cf030ec71b181' + PRIVATE_KEY + '7b964a0']
     }
+  },
+  etherscan: {
+    apiKey: process.env.GOERLI_API_KEY
   }
 };
