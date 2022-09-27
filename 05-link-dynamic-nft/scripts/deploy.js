@@ -55,12 +55,12 @@ async function main() {
     vrfCoordinatorMock.address)
   await tokenContract.setSubscriptionId(subscriptionId);
 }
-//BullBear:  0xC3F22Db76dA6521471A77165a92519e4fE2afea5 60 0x4e70c784ca92fc73aeb8ccb799d0ecee41770bc6 0xd95b2bb98d1b4cdb8168311077fd586bb848bb83
 async function onlyToken() {
   // Setup dNFT
   Token = await ethers.getContractFactory("BullBear");
   priceFeedAddr = '0x4e70c784ca92fc73aeb8ccb799d0ecee41770bc6'
-  vrfAddr = '0xd95b2bb98d1b4cdb8168311077fd586bb848bb83'
+  //https://vrf.chain.link/
+  vrfAddr = '0x2ca8e0c643bde4c2e08ab1fa0da3401adad7734d'
   tokenContract = await Token.deploy(
     UPDATE_INTERVAL_SEC,
     priceFeedAddr,
@@ -69,7 +69,7 @@ async function onlyToken() {
 
   console.log('BullBear: ', tokenContract.address, UPDATE_INTERVAL_SEC,
     priceFeedAddr, vrfAddr)
-  await tokenContract.setSubscriptionId(1);
+  await tokenContract.setSubscriptionId(2600);
 }
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
@@ -79,3 +79,8 @@ onlyToken()
     console.error(error);
     process.exit(1);
   });
+//PriceFeed: https://goerli.etherscan.io/address/0x4e70c784ca92fc73aeb8ccb799d0ecee41770bc6
+//VRFCoordinatorV2Mock(use link): https://goerli.etherscan.io/address/0xd95b2bb98d1b4cdb8168311077fd586bb848bb83  
+//pnpm hardhat verify --network goerli 0x4e70c784ca92fc73aeb8ccb799d0ecee41770bc6 8 3000000000000 
+//pnpm hardhat verify --network goerli 0xd95b2bb98d1b4cdb8168311077fd586bb848bb83 250000000000000000 1000000000
+//pnpm hardhat verify --network goerli 0xA59fFdFE4C40030c7d6581F368C146470da38a56 60 0x4e70c784ca92fc73aeb8ccb799d0ecee41770bc6 0x2ca8e0c643bde4c2e08ab1fa0da3401adad7734d
