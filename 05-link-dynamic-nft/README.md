@@ -1,13 +1,22 @@
 # REPOSITORY FOR THE CHAINLINK LABS MODULE IN ALCHEMY'S ROAD TO WEB3 DEVELOPER PROGRAM
-
+### Work done
+Code: https://github.com/neoscript99/road-to-web3/tree/master/05-link-dynamic-nft
+Bull&Bear Nft(Contract verified): https://goerli.etherscan.io/address/0xA59fFdFE4C40030c7d6581F368C146470da38a56
+VRF: Use Chainlink goerli https://goerli.etherscan.io/address/0x53de3bdee83d50be923533a99f54738bc2ce5ed9, Subscription Id 2600
+PriceFeed: https://goerli.etherscan.io/address/0xA39434A63A52E749F02807ae27335515BA4b07F7
+Upkeep: Chainlink goerli https://goerli.etherscan.io/address/0x02777053d6764996e594c3e88af1d58d5363a2e6, id 74766432885586532059563617625143060684020462912915113159908805257248777214556
 ### TABLE OF CONTENTS
 
-- [Project Description](#project-description)
-- [Expanding Your Skills](#expanding-your-skills)
-- [Tooling Requirements](#tooling-requirements)
-- [Branches](#branches)
-- [Assignment](#assignment)
-- [Viewing NFTS](#viewing-nfts-on-opensea)
+- [REPOSITORY FOR THE CHAINLINK LABS MODULE IN ALCHEMY'S ROAD TO WEB3 DEVELOPER PROGRAM](#repository-for-the-chainlink-labs-module-in-alchemys-road-to-web3-developer-program)
+    - [Work done](#work-done)
+    - [TABLE OF CONTENTS](#table-of-contents)
+    - [Project Description](#project-description)
+    - [Expanding your skills](#expanding-your-skills)
+    - [TOOLING REQUIREMENTS](#tooling-requirements)
+    - [Branches](#branches)
+    - [Assignment](#assignment)
+    - [Viewing NFTs on Opensea](#viewing-nfts-on-opensea)
+    - [Thank you!](#thank-you)
 
 ### Project Description
 
