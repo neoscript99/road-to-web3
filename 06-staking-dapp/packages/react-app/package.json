@@ -78,6 +78,7 @@
     "ipfs-http-client": "^45.0.0",
     "less-plugin-npm-import": "^2.1.0",
     "prettier": "^2.0.5",
+    "react-refresh": "^0.14.0",
     "s3-folder-upload": "^2.3.1",
     "surge": "^0.21.5"
   },
