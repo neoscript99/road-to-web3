@@ -99,9 +99,8 @@ export default function Faucet(props) {
               onClick={() => {
                 tx({
                   to: address,
-                  value: utils.parseEther("0.01"),
+                  value: utils.parseEther("10"),
                 });
-                setAddress("");
               }}
               shape="circle"
               icon={<SendOutlined />}

@@ -70,8 +70,8 @@ const scaffoldEthProvider = navigator.onLine
   : null;
 const poktMainnetProvider = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider(
-      "https://eth-mainnet.gateway.pokt.network/v1/lb/611156b4a585a20035148406",
-    )
+    "https://eth-mainnet.gateway.pokt.network/v1/lb/611156b4a585a20035148406",
+  )
   : null;
 const mainnetInfura = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider("https://mainnet.infura.io/v3/" + INFURA_ID)
@@ -166,12 +166,13 @@ const web3Modal = new Web3Modal({
 });
 
 function App(props) {
+  console.log("------------------------------App Render------------------------------");
   const mainnetProvider =
     poktMainnetProvider && poktMainnetProvider._isProvider
       ? poktMainnetProvider
       : scaffoldEthProvider && scaffoldEthProvider._network
-      ? scaffoldEthProvider
-      : mainnetInfura;
+        ? scaffoldEthProvider
+        : mainnetInfura;
 
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
@@ -528,7 +529,7 @@ function App(props) {
             <Divider />
 
             <div style={{ padding: 8, marginTop: 16 }}>
-              <div>Reward Rate Per Second: {rewardRatePerBlock}%</div>
+              <div>Reward Rate Per Block : {rewardRatePerBlock && rewardRatePerBlock.toNumber()}%</div>
             </div>
 
             <Divider />
@@ -572,6 +573,17 @@ function App(props) {
               <Button
                 type={"default"}
                 onClick={() => {
+                  tx(writeContracts.Staker.getBack());
+                }}
+              >
+                📡 Get Back!
+              </Button>
+            </div>
+
+            <div style={{ padding: 8 }}>
+              <Button
+                type={"default"}
+                onClick={() => {
                   tx(writeContracts.Staker.withdraw());
                 }}
               >
@@ -584,10 +596,10 @@ function App(props) {
               <Button
                 type={balanceStaked ? "success" : "primary"}
                 onClick={() => {
-                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther(stakeAmount) }));
+                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther(`${stakeAmount}`) }));
                 }}
               >
-                🥩 Stake 0.5 ether!
+                🥩 Stake {stakeAmount} ether!
               </Button>
             </div>
 
