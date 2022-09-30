@@ -3,14 +3,14 @@ import axie from "../tile.jpeg";
 import { useLocation, useParams } from 'react-router-dom';
 import MarketplaceJSON from "../Marketplace.json";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export default function NFTPage(props) {
 
     const [dataFetched, updateDataFetched] = useState(false);
     const [data, updateData] = useState({});
     const [message, updateMessage] = useState("");
-    const [currAddress, updateCurrAddress] = useState("0x");
+    const [currAddress, updateCurrAddress] = useState(window.ethereum.selectedAddress);
     async function getNFTData(tokenId) {
         const ethers = require("ethers");
         //After adding your Hardhat network to your metamask, this code will get providers and signers
@@ -61,6 +61,10 @@ export default function NFTPage(props) {
     const tokenId = params.tokenId;
     if (!dataFetched)
         getNFTData(tokenId);
+    const isOwner = useMemo(() => {
+        return currAddress && data.owner && data.seller && (currAddress.toLowerCase() == data.owner.toLowerCase() ||
+            currAddress.toLowerCase() == data.seller.toLowerCase())
+    }, [currAddress, data])
     return (
         <div style={{ "minHeight": "100vh" }}>
             <Navbar></Navbar>
@@ -83,9 +87,11 @@ export default function NFTPage(props) {
                         Seller: <span className="text-sm">{data.seller}</span>
                     </div>
                     <div>
-                        {currAddress == data.owner || currAddress == data.seller ?
+                        {isOwner ?
                             <div className="text-emerald-700">You are the owner of this NFT</div>
-                            : <button onClick={() => buyNFT(tokenId)} className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">Buy this NFT</button>
+                            : (<button onClick={() => buyNFT(tokenId)} className="enableEthereumButton bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
+                                Buy this NFT
+                            </button>)
                         }
 
                         <div className="text-green text-center mt-3">{message}</div>

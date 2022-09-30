@@ -16,16 +16,20 @@ function Navbar() {
   const [connected, toggleConnect] = useState(false);
   const location = useLocation();
   const [currAddress, updateAddress] = useState('0x');
+  const setAccount = useCallback((accounts) => {
+    updateAddress(accounts[0]);
+    toggleConnect(true);
+  }, [])
   const onConnect = useCallback(() => {
     let ethereum = window.ethereum
     if (ethereum)
-      ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
-        updateAddress(accounts[0]);
-        toggleConnect(true)
-      });
+      ethereum.request({ method: 'eth_requestAccounts' }).then(setAccount)
     else alert('no wallet')
   }, [])
-  useEffect(() => { onConnect() }, [])
+  useEffect(() => {
+    onConnect();
+    window.ethereum.on('accountsChanged', setAccount);
+  }, [])
   return (
     <div className="">
       <nav className="w-screen">
